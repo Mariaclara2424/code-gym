@@ -1,0 +1,11 @@
+{# Cor fixa por pessoa, derivada do nome (para cada um ter sempre a mesma cor) #}
+{% macro cor(nome) -%}
+cor-{{ nome|length % 5 }}
+{%- endmacro %}
+
+{# Bolinha com as iniciais: "Maria Clara" -> MC #}
+{% macro avatar(nome, tamanho="") -%}
+<span class="avatar {{ cor(nome) }} {{ tamanho }}" title="{{ nome }}">
+  {%- for parte in nome.split()[:2] %}{{ parte[0]|upper }}{% endfor -%}
+</span>
+{%- endmacro %}

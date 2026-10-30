@@ -1,0 +1,21 @@
+# Ambiente virtual e cache do Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Segredos: NUNCA versionar (use o .env.example como modelo)
+.env
+.env.*
+!.env.example
+
+# Banco de dados local (contém usuários, hashes de senha e soluções)
+code_gym.db
+*.db
+*.sqlite3
+
+# Editor / sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

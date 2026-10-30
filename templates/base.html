@@ -1,0 +1,48 @@
+{% from "_macros.html" import avatar %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Code Gym{% endblock %} · Code Gym</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.violet.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topo">
+    <nav class="container">
+      <ul>
+        <li><a href="{{ url_for('index') }}" class="logo">🏋️ Code<span>Gym</span></a></li>
+      </ul>
+      {% if usuario_nome %}
+      <ul class="menu">
+        <li><a href="{{ url_for('index') }}" class="{{ 'ativo' if request.endpoint in ('index', 'desafio') }}">Desafio</a></li>
+        <li><a href="{{ url_for('historico') }}" class="{{ 'ativo' if request.endpoint == 'historico' }}">Histórico</a></li>
+        <li><a href="{{ url_for('placar') }}" class="{{ 'ativo' if request.endpoint == 'placar' }}">Placar</a></li>
+        <li class="usuario">
+          {{ avatar(usuario_nome, "pequeno") }}
+          <a href="{{ url_for('logout') }}">Sair</a>
+        </li>
+      </ul>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+      {% for categoria, texto in mensagens %}
+        <div class="aviso aviso-{{ categoria }}">{{ texto }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    {% block conteudo %}{% endblock %}
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

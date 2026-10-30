@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar{% endblock %}
+
+{% block conteudo %}
+<article class="caixa-login">
+  <div class="marca">🏋️</div>
+  <hgroup>
+    <h2>Bem-vindo de volta</h2>
+    <p>Treino semanal de Python para dois.</p>
+  </hgroup>
+  <form method="post">
+    <label>
+      Nome
+      <input type="text" name="nome" required autofocus autocomplete="username" placeholder="Ex.: Maria Clara">
+    </label>
+    <label>
+      Senha
+      <input type="password" name="senha" required autocomplete="current-password" placeholder="••••••••">
+    </label>
+    <button type="submit">Entrar</button>
+  </form>
+</article>
+{% endblock %}

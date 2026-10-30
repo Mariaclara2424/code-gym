@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% from "_macros.html" import avatar, cor %}
+{% block titulo %}Placar{% endblock %}
+
+{% block conteudo %}
+<h1>Placar</h1>
+
+{% set total = linhas|sum(attribute="pontos") %}
+<div class="placar">
+  {% for l in linhas %}
+  {% set lider = loop.first and l.pontos > 0 and (linhas|length == 1 or l.pontos > linhas[1].pontos) %}
+  <article class="cartao-placar {{ 'lider' if lider }}">
+    {% if lider %}<span class="coroa">👑 Liderando</span>{% endif %}
+    {{ avatar(l.nome, "grande") }}
+    <h3>{{ l.nome }}</h3>
+    <p class="numero">{{ l.pontos }}<small>pts</small></p>
+    <div class="stats">
+      <div>
+        <strong>🔥 {{ l.streak }}</strong>
+        <small>semana{{ "s" if l.streak != 1 }} seguida{{ "s" if l.streak != 1 }}</small>
+      </div>
+      <div>
+        <strong>✅ {{ l.semanas }}</strong>
+        <small>concluída{{ "s" if l.semanas != 1 }}</small>
+      </div>
+    </div>
+  </article>
+  {% else %}
+  <p>Nenhum usuário cadastrado.</p>
+  {% endfor %}
+</div>
+
+{% if total > 0 and linhas|length > 1 %}
+<article class="disputa">
+  <h3 class="titulo-secao">⚔️ Disputa</h3>
+  <div class="barra">
+    {% for l in linhas %}
+      <span class="{{ cor(l.nome) }}" style="width: {{ (l.pontos / total * 100)|round(1) }}%" title="{{ l.nome }}: {{ l.pontos }} pts"></span>
+    {% endfor %}
+  </div>
+  <div class="legenda">
+    {% for l in linhas %}
+      <span>{{ l.nome }} · {{ (l.pontos / total * 100)|round|int }}%</span>
+    {% endfor %}
+  </div>
+</article>
+{% endif %}
+
+<details class="cartao">
+  <summary>Como funciona a pontuação</summary>
+  <ul>
+    <li>Fácil = {{ pontos.facil }} pts · Médio = {{ pontos.medio }} pts · Difícil = {{ pontos.dificil }} pts.</li>
+    <li>Só conta o envio feito dentro da semana do desafio (segunda a domingo).</li>
+    <li>Streak = semanas seguidas com envio. A semana atual ainda está em aberto, então não zera o streak até domingo.</li>
+  </ul>
+</details>
+{% endblock %}
